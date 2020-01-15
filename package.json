@@ -1,6 +1,6 @@
 {
   "name": "jql-parser",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -12,7 +12,12 @@
     "build": "tsc",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'"
   },
-  "keywords": ["jira", "jql", "grammar", "parser"],
+  "keywords": [
+    "jira",
+    "jql",
+    "grammar",
+    "parser"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
