@@ -1,26 +1,28 @@
-import {Parenthesis} from '../elements/Parenthesis';
-import {Quote} from '../elements/Quote';
-import {Token} from '../elements/Token';
-import {Value} from '../elements/Value';
+import { List } from "./List";
+import { Parenthesis } from "./Parenthesis";
+import { Quote } from "./Quote";
+import { Token } from "./Token";
+import { Value } from "./Value";
 
 /**
- * operand :== quote | string | paren {expression}
+ * operand :== quote | string | paren{list}
  */
 export class Operand extends Token {
-  value!: Quote | Value | Parenthesis;
+  value!: Quote | Value | List;
+  paren?: Parenthesis;
   spaces = 0;
 
   get end(): number {
-    return this.spaces + this.value.end;
-  }
-
-  protected matcherFn(str: string): number {
-    throw new Error('Method not implemented.');
+    const end = this.spaces;
+    if (this.paren && this.paren.end > 0) {
+      return end + this.paren.end;
+    }
+    return end + this.value.end;
   }
 
   parse(input: string): boolean {
     let str = input;
-    if (input[0] === ' ') {
+    if (input[0] === " ") {
       this.spaces = 1;
       str = input.substr(1);
     }
@@ -37,10 +39,10 @@ export class Operand extends Token {
       return true;
     }
 
-    const paren = new Parenthesis();
-    if (paren.parse(str)) {
-      this.value = paren;
-      return true;
+    this.paren = new Parenthesis();
+    if (this.paren.parse(str)) {
+      this.value = new List();
+      return this.value.parse(this.paren.content);
     }
 
     return false;

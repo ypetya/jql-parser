@@ -1,6 +1,6 @@
-import {Token} from '../elements/Token';
-import {Expression} from './Expression';
-import {OrderBy} from './OrderBy';
+import { Expression } from "./Expression";
+import { OrderBy } from "./OrderBy";
+import { Token } from "./Token";
 
 export class Sentence extends Token {
   expression!: Expression;
@@ -8,14 +8,14 @@ export class Sentence extends Token {
 
   // TODO: no global normalization! every token should do itself!
   private static normalize(jql: string): string {
-    let s = jql.replace(/[ ]{2,}/g, ' ');
-    s = s.replace(/ and /ig, ' AND ');
-    s = s.replace(/ or /ig, ' OR ');
-    s = s.replace(/ in\s?\(/ig, ' IN (');
-    s = s.replace(/ order by /i, ' ORDER BY ');
-    s = s.replace(/ asc$/i, ' ASC');
-    s = s.replace(/ desc$/i, ' DESC');
-    s = s.replace(/ in openSprint/i, ' IN openSprint');
+    let s = jql.replace(/[ ]{2,}/g, " ");
+    s = s.replace(/ and /ig, " AND ");
+    s = s.replace(/ or /ig, " OR ");
+    s = s.replace(/ in\s?\(/ig, " IN (");
+    s = s.replace(/ order by /i, " ORDER BY ");
+    s = s.replace(/ asc$/i, " ASC");
+    s = s.replace(/ desc$/i, " DESC");
+    s = s.replace(/ in openSprint/i, " IN openSprint");
     return s.trim();
   }
 
@@ -25,10 +25,6 @@ export class Sentence extends Token {
       end += this.orderBy.end;
     }
     return end;
-  }
-
-  protected matcherFn(str: string): number {
-    throw new Error('Method not implemented.');
   }
 
   parse(input: string): boolean {

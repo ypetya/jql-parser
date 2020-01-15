@@ -1,13 +1,15 @@
-import {And, Comma, Or, Separator} from '../elements/separators';
-import {Token} from '../elements/Token';
-import {Term} from './Term';
+import { Parenthesis } from "./Parenthesis";
+import { And, Or, Separator } from "./separators";
+import { Term } from "./Term";
+import { Token } from "./Token";
 
 /**
- * expression(Or,And) :== term [ separator(Or,And) { expression } ]
+ * expression(Or,And) :== term [ separator(Or,And) { paren{expression} | expression } ]
  */
 export class Expression extends Token {
   term!: Term;
   separator?: Separator;
+  paren?: Parenthesis;
   expression?: Expression;
 
   get end(): number {
@@ -15,8 +17,12 @@ export class Expression extends Token {
     if (this.separator) {
       end += this.separator.end;
     }
-    if (this.expression) {
-      end += this.expression.end;
+    if (this.paren) {
+      if(this.paren.end > 0) {
+        end += this.paren.end;
+      } else if (this.expression) {
+        end += this.expression.end;
+      }
     }
     return end;
   }
@@ -33,11 +39,7 @@ export class Expression extends Token {
   }
 
   set content(value: string) {
-    throw new Error('Method not implemented.');
-  }
-
-  protected matcherFn(str: string): number {
-    throw new Error('Method not implemented.');
+    throw new Error("Method not implemented.");
   }
 
   // TODO flatten expressions!
@@ -48,7 +50,14 @@ export class Expression extends Token {
       this.separator = parseSeparator(next);
       if (this.separator) {
         next = next.substr(this.separator.end);
+
         this.expression = new Expression();
+
+        this.paren = new Parenthesis();
+        if (this.paren.parse(next)) {
+          return this.expression.parse(this.paren.content);
+        }
+
         return this.expression.parse(next);
       }
       return true;
@@ -57,7 +66,7 @@ export class Expression extends Token {
   }
 }
 
-const SEPARATORS: Array<() => Separator> = [() => new And(), () => new Or(), () => new Comma()];
+const SEPARATORS: Array<() => Separator> = [() => new And(), () => new Or()];
 
 function parseSeparator(jql: string): Separator | undefined {
   for (const separator of SEPARATORS) {

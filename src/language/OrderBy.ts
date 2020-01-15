@@ -1,22 +1,22 @@
-import {Token} from '../elements/Token';
-import {Operand} from './Operand';
+import { Operand } from "./Operand";
+import { Token } from "./Token";
 
 export class OrderBy extends Token {
-  order: 'ASC' | 'DESC' | null = null;
+  order: "ASC" | "DESC" | null = null;
   operand?: Operand;
   private spaces = 0;
 
   protected matcherFn(str: string): number {
     let next = str;
-    if (str[0] === ' ') {
+    if (str[0] === " ") {
       this.spaces = 1;
       next = str.substr(1);
     }
-    if (next.startsWith('ORDER BY ')) {
-      if (next.endsWith('ASC')) {
-        this.order = 'ASC';
-      } else if (next.endsWith('DESC')) {
-        this.order = 'DESC';
+    if (next.startsWith("ORDER BY ")) {
+      if (next.endsWith("ASC")) {
+        this.order = "ASC";
+      } else if (next.endsWith("DESC")) {
+        this.order = "DESC";
       }
     }
 

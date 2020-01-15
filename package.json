@@ -12,7 +12,7 @@
     "build": "tsc",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'"
   },
-  "keywords": [],
+  "keywords": ["jira", "jql", "grammar", "parser"],
   "author": "",
   "license": "ISC",
   "devDependencies": {

@@ -2,7 +2,7 @@ import {Token} from './Token';
 
 export class Value extends Token {
 
-  static S = /^[a-zA-Z0-9+\-~_@.]+(\(\))?/;
+  static S = /^[a-zA-Z0-9+\-~_@./]+(\(\))?/;
 
   protected matcherFn(str: string): number {
     const groups = str.match(Value.S);

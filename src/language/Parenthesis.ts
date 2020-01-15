@@ -1,12 +1,10 @@
-import {Expression} from '../language/Expression';
-import {Token} from './Token';
+import { Token } from "./Token";
 
 export class Parenthesis extends Token {
-  nestedExpression?: Expression;
 
   private static startsWithParenthesis(jql: string): number {
     if (jql.length >= 2) {
-      if (jql[0] === '(') {
+      if (jql[0] === "(") {
         return 0;
       }
     }
@@ -16,14 +14,15 @@ export class Parenthesis extends Token {
   private static endOfParenthesis(jql: string): number {
     const stack = [];
     for (let i = 0; i < jql.length; i++) {
-      if (jql[i] === '(') {
+      if (jql[i] === "(") {
         stack.push(i);
-      } else if (jql[i] === ')') {
+      } else if (jql[i] === ")") {
         stack.pop();
         if (stack.length === 0) {
           return i;
         }
       }
+      // TODO skip quotes
     }
     return stack[0];
   }
@@ -40,11 +39,6 @@ export class Parenthesis extends Token {
 
   parse(input: string): boolean {
     this.end = this.matcherFn(input);
-    if (this.end > 0) {
-      this.nestedExpression = new Expression();
-
-      return this.nestedExpression.parse(this.content);
-    }
-    return false;
+    return this.end > 0;
   }
 }

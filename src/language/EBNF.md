@@ -7,10 +7,11 @@ For concrete examples please see test files.
 
 ```
 S :== ^ expression [ orderByClause ] $
-expression(x | Or,And,Comma) :== ^ term [ separator(x) { expression } ]
+expression(Or,And) :== term [ separator(Or,And) { paren{expression} | expression } ]
 term :== ^ operand [ {space} operator { operand } ]
-operand :== ^ [space] (quote | string | parenClause)
-parenClause :==  ^ "(" [ expression ] ")"
+operand :== ^ [space] (quote | string | paren{list})
+list :== operand [ {Comma} {list} ]
+paren :==  ^ "(" {...} ")"
 orderByClause :== ^ [space] "ORDER BY" operand " ASC|DESC" $
 space :== " "
 ```

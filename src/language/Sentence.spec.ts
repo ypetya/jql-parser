@@ -15,6 +15,13 @@ describe('Sentence', () => {
   });
 
   it('should parse a sentence with nested parenthesis', () => {
-    expect(s.parse('b = validFn() or ( a in (1,2,3 , "UI/" ) AND peter_kiss = assignee )')).toBe(true);
+    const str = 'b = validFn() or ( a in (1,2,3 , "UI/" ) AND peter_kiss = assignee )';
+    expect(s.parse(str)).toBe(true);
+    expect(s.end).toBe(str.length);
+
   });
+
+  it('should not accept a single string', () => {
+    expect(s.parse('"basic failing expression"')).toBe(false);
+  })
 });
