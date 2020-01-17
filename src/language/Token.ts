@@ -3,7 +3,7 @@ export abstract class Token {
   end!: number;
 
   protected matcherFn(str: string): number {
-    return 0;
+    throw new Error("Method not implemented");
   };
 
   abstract parse(input: string): boolean;

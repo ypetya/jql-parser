@@ -18,7 +18,7 @@ export class Expression extends Token {
       end += this.separator.end;
     }
     if (this.paren) {
-      if(this.paren.end > 0) {
+      if (this.paren.end > 0) {
         end += this.paren.end;
       } else if (this.expression) {
         end += this.expression.end;
@@ -47,6 +47,10 @@ export class Expression extends Token {
     this.term = new Term();
     if (this.term.parse(input)) {
       let next = input.substr(this.term.end);
+
+      if (next === "" || next === " ") {
+        return true;
+      }
       this.separator = parseSeparator(next);
       if (this.separator) {
         next = next.substr(this.separator.end);
@@ -60,7 +64,6 @@ export class Expression extends Token {
 
         return this.expression.parse(next);
       }
-      return true;
     }
     return false;
   }

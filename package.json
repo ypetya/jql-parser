@@ -18,6 +18,10 @@
     "grammar",
     "parser"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ypetya/jql-parser"
+  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
