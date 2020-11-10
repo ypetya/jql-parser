@@ -22,7 +22,7 @@ export class OrderBy extends Token {
 
     if (this.order) {
       this.content = next.substr(9,
-        next.length - 9 - this.order.length);
+        next.length - 9 - (this.order.length + 1));
       return next.length;
     }
     return 0;

@@ -27,14 +27,29 @@ export class Sentence extends Token {
     return end;
   }
 
+  // separate ORDER by clause from the EXPRESSION
+  protected matcherFn(str: string): number {
+    let ix = str.indexOf('ORDER');
+
+    if(ix===-1) {
+      ix = str.length;
+    }
+    return ix;
+  }
+
+
   parse(input: string): boolean {
     this.content = Sentence.normalize(input);
     this.expression = new Expression();
-    if (this.expression.parse(this.content)) {
-      if (this.expression.end !== this.content.length) {
-        const next = this.content.substr(this.expression.end);
+
+    const end = this.matcherFn(this.content);
+    const expressionPart = this.content.substr(0, end);
+
+    if (this.expression.parse(expressionPart)) {
+      if (this.content.length !== end) {
+        const orderByPart = this.content.substr(end,this.content.length - expressionPart.length);
         this.orderBy = new OrderBy();
-        return this.orderBy.parse(next);
+        return this.orderBy.parse(orderByPart);
       }
       return true;
     }
